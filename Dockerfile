@@ -1,6 +1,8 @@
 FROM golang:1.8-alpine
 
-RUN apk add --no-cache git docker
+RUN apk add --no-cache git docker bash
 RUN go get github.com/yudai/gotty
 
-ENTRYPOINT gotty --title-format "Panux Demo" --max-connection "20" -w docker run -it -m 100m panux/panux:x86_64
+ADD run.sh run.sh
+RUN chmod 700 run.sh
+ENTRYPOINT gotty --title-format "Panux Demo" --close-signal "1" --max-connection "20" -w bash run.sh
